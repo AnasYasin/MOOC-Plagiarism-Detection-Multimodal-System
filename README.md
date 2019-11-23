@@ -1,4 +1,4 @@
-# MOOC-Pledge-Multimodal-System
+# MOOC plagiarism detection multimodal system
  
 Modules:
   Audio Detection
