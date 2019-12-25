@@ -6,12 +6,13 @@ import sys
 wf = wave.open(sys.argv[1], 'rb')
 p = pyaudio.PyAudio()
 
-FORMAT=p.get_format_from_width(wf.getsampwidth())
-CHANNELS=wf.getnchannels()
-RATE=wf.getframerate()
-CHUNK=1024
-THRESHOLD=7500
-
+FORMAT = p.get_format_from_width(wf.getsampwidth())
+CHANNELS = wf.getnchannels()
+RATE = wf.getframerate()
+CHUNK = 1024
+THRESHOLD = 7500
+PlagRatio = 0.15 #ratio of plag in whole audio
+ 
 stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, output=True)
 
 counter = 0
@@ -21,7 +22,7 @@ while(True):
     data = wf.readframes(CHUNK)
     data_chunk=array('h',data)
     try:
-        vol=max(data_chunk)
+        vol=max(data_c  hunk)
     except:
         break
     if(vol>=THRESHOLD):
@@ -34,7 +35,7 @@ while(True):
 
 print("_______________________________")
 print(talking/counter)
-if((talking/counter) >= 0.15):
+if((talking/counter) >= PlagRatio):
     print("Plag")
 else:
     print("No Plag") 
