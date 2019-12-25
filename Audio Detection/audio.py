@@ -22,7 +22,7 @@ while(True):
     data = wf.readframes(CHUNK)
     data_chunk=array('h',data)
     try:
-        vol=max(data_c  hunk)
+        vol=max(data_chunk)
     except:
         break
     if(vol>=THRESHOLD):
