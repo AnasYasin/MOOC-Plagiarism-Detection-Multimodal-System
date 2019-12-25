@@ -33,24 +33,33 @@ def predict(train_data, img_pred):
 if __name__ == "__main__":
     
     train_data = np.load('train_data.npy')
-    videoName = sys.argv[1] +  '.avi'
+    videoName = sys.argv[1]
     video = cv2.VideoCapture(videoName)
-    
-    while(video.isOpened()): 
+    fps = 25
+    flow = 0
+    continueFlow = 0    
+    timeForPlag = 3 #in seconds
+    while(video.isOpened()):
         ret, img_pred = video.read()
         
         if ret == True: #checking for if there are more frames left in video
             val1, val2, val3 = predict(train_data, img_pred)
-            
+            flow+=1 
             if (val1 > 29000 or len(str(int(val2))) > 5 or len(str(int(val3))) > 5):
-                print(": PLAG", val1, ' | ' ,  val2, ' | ' , val3)
+                continueFlow+=1
+                #print(": PLAG", val1, ' | ' ,  val2, ' | ' , val3)
                 cv2.putText(img_pred, 'PLAG', (700,300), font, 3, (0, 0, 255), 2, cv2.LINE_AA)
             else:
-                print(": No PLAG", val1, ' | ' ,  val2, ' | ' , val3)
+                #print(": No PLAG", val1, ' | ' ,  val2, ' | ' , val3)
                 cv2.putText(img_pred, 'NO PLAG', (700,300), font, 3, (0, 255, 0), 2, cv2.LINE_AA)
+                continueFlow = 0
+                flow = 0
+                
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             cv2.imshow('Frame',img_pred)
+            if (flow == continueFlow and (flow > (fps*timeForPlag))):
+                print("Plag")
  
         else: #end of video
             break
